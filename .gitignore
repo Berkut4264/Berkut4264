@@ -1,0 +1,27 @@
+# Секреты и генерируемые бинарные файлы — в систему контроля версий не попадают!
+
+# Cyrus SASL: база паролей (по умолчанию пароли в ОТКРЫТОМ виде!)
+sasldb2
+
+# Бинарные БД, генерируемые из текстовых карт (newaliases / postmap):
+*.db
+
+# Приватные ключи DKIM и каталоги с ключами:
+dkimkeys/
+opendkim/keys/
+
+# Let's Encrypt: аккаунтные и приватные ключи:
+letsencrypt/accounts/
+letsencrypt/keys/
+**/private*.pem
+**/privkey*.pem
+*.key
+
+# Certbot с доступом к DNS API (токен Cloudflare в открытом виде):
+letsencrypt/cloudflareapi.cfg
+
+# Системные теневые пароли:
+shadow
+shadow-
+gshadow
+gshadow-

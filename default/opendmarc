@@ -1,0 +1,10 @@
+# /etc/default/opendmarc — параметры запуска демона (Ubuntu/Debian)
+# SOCKET должен совпадать с Socket в /etc/opendmarc.conf и с
+# smtpd_milters в /etc/postfix/main.cf (порт 8893).
+RUNDIR=/run/opendmarc
+SOCKET=inet:8893@localhost
+USER=opendmarc
+GROUP=opendmarc
+PIDFILE=$RUNDIR/opendmarc.pid
+EXTRAFLAGS=
+DAEMON_OPTS=

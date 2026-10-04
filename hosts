@@ -1,5 +1,18 @@
 127.0.0.1 localhost
 
+# ИСПРАВЛЕНО: раньше имя хоста "mail" не резолвилось вообще — smtpd/системные
+# утилиты получали NXDOMAIN для собственного имени (ошибки в логах,
+# кривой HELO у локально сгенерированной почты).
+# Для сервера со статическим IP правильная строка:
+#   <публичный_IP>  mail.mymyblog.cf mail
+# Временно (до получения статики) — по соглашению Debian:
+127.0.1.1 mail.mymyblog.cf mail
+
+# Имя хоста в /etc/hostname на почтовом сервере лучше держать в виде FQDN
+# (mail.mymyblog.cf) — тогда AuthservID в Authentication-Results и HELO
+# всегда корректны. Либо оставьте "mail", но не забудьте задать
+# myhostname = mail.mymyblog.cf в postfix/main.cf (уже сделано).
+
 # The following lines are desirable for IPv6 capable hosts
 ::1 ip6-localhost ip6-loopback
 fe00::0 ip6-localnet

@@ -1,0 +1,3 @@
+# OpenDKIM SigningTable — кем подписывать письма от каких адресов
+# Формат:  <адрес отправителя>  <keyname из KeyTable>
+*@mymyblog.cf mail._domainkey.mymyblog.cf
