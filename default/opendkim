@@ -1,0 +1,13 @@
+# /etc/default/opendkim — параметры запуска демона (Ubuntu/Debian)
+# ВАЖНО: значение SOCKET здесь ДОЛЖНО совпадать с Socket в
+# /etc/opendkim.conf и smtpd_milters в /etc/postfix/main.cf.
+# Рассинхрон этих трёх мест — классическая причина
+# "warning: connect to Milter service inet:localhost:8891: Connection refused".
+
+RUNDIR=/run/opendkim
+SOCKET=inet:8891@localhost
+USER=opendkim
+GROUP=opendkim
+PIDFILE=$RUNDIR/opendkim.pid
+EXTRAFLAGS=
+DAEMON_OPTS=

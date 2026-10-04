@@ -1,0 +1,10 @@
+# OpenDKIM KeyTable — соответствие «имя записи -> домен:селектор:ключ»
+# Формат:  <keyname>  <domain>:<selector>:<путь к приватному ключу>
+#
+# Перед запуском сгенерируйте ключ 2048 бит:
+#   mkdir -p /etc/opendkim/keys/mymyblog.cf
+#   opendkim-genkey -b 2048 -d mymyblog.cf -D /etc/opendkim/keys/mymyblog.cf -s mail -v
+#   chown opendkim:opendkim /etc/opendkim/keys/mymyblog.cf/mail.private
+#   chmod 600 /etc/opendkim/keys/mymyblog.cf/mail.private
+# Публичный ключ для DNS запишется в mail.txt (запись mail._domainkey TXT).
+mail._domainkey.mymyblog.cf mymyblog.cf:mail:/etc/opendkim/keys/mymyblog.cf/mail.private

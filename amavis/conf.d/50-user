@@ -1,0 +1,58 @@
+# ==================================================================
+# Amavis — локальные настройки сайта (50-user)
+# Модернизировано 2026-10. Целевая версия: amavisd-new 2.13
+# (Ubuntu 24.04). Документация: /usr/share/doc/amavisd-new/
+# ==================================================================
+use strict;
+
+# --- Маршрутизация (см. postfix/master.cf: отправка 10024 -> возврат 10025)
+$inet_socket_port = 10024;
+$forward_method = 'smtp:[127.0.0.1]:10025';
+$notify_method  = 'smtp:[127.0.0.1]:10025';
+
+@mynetworks = qw( 127.0.0.0/8 [::1] );
+$inet_socket_bind = '127.0.0.1';
+
+# --- Идентификация
+$mydomain   = 'mymyblog.cf';
+$myhostname = 'mail.mymyblog.cf';
+
+# --- Уведомления администратору
+$virus_admin = "postmaster\@$mydomain";
+$spam_admin  = undef;           # иначе тонны писем при спам-штормах
+$mailfrom_notify_admin     = "amavis\@$mydomain";
+$mailfrom_notify_recip     = "amavis\@$mydomain";
+$mailfrom_notify_spamadmin = "amavis\@$mydomain";
+
+# --- Судьба писем
+# D_DISCARD вместо D_BOUNCE: bounce спамом порождает backscatter-шум —
+# нарушение современных антиспам-норм; спам просто молча отклоняется
+# на этапе SMTP (отправитель получит 5xx от нашего Postfix).
+$final_virus_destiny      = D_DISCARD;
+$final_banned_destiny     = D_BOUNCE;   # отправитель — скорее свой: честный отказ
+$final_spam_destiny       = D_DISCARD;
+$final_bad_header_destiny = D_PASS;
+
+# --- Пороги SpamAssassin
+$sa_tag_level_deflt   = 2.0;   # добавлять X-Spam-* заголовки (видно в почтовом клиенте)
+$sa_tag2_level_deflt  = 6.31;  # пометка ***SPAM*** + X-Spam-Flag: YES (схватит sieve -> Junk)
+$sa_kill_level_deflt  = 12.0;  # выше порога — действие $final_spam_destiny
+$sa_dsn_cutoff_level  = 12.0;  # выше — точно не слать уведомлений
+$sa_spam_subject_tag  = '***SPAM*** ';
+$sa_spam_modifies_subj = 1;
+
+# --- DKIM внутри Amavis
+$enable_dkim_verification = 1;   # проверка — да (учитывается SpamAssassin'ом)
+$enable_dkim_signing = 0;        # подписание — НЕТ: этим занимается OpenDKIM
+                                  # (иначе могла бы получиться двойная подпись)
+
+# --- Производительность (маленький VPS)
+$max_servers = 2;
+$child_timeout = 10*60;
+
+# --- Карантин: по умолчанию локальный (Bcc-файлы).
+# Для связки со SpamAssassin убедитесь, что пакет spamassassin установлен,
+# а cron.d/spamassassin (sa-update) и sa-update-hooks.d/amavisd-new активны —
+# без обновления правил эффективность фильтра стремится к нулю.
+
+1;  # обязательная строка в конце perl-файла

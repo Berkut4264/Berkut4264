@@ -1,1 +1,16 @@
-root: postmaster@mymyblog.cf
+# /etc/aliases — локальные почтовые алиасы.
+# Обязательные по RFC 2142 алиасы: postmaster, abuse.
+# После правки: newaliases (пересоберёт aliases.db — сам .db в git не нужен!)
+
+MAILER-DAEMON:  postmaster
+postmaster:     root
+abuse:          root
+hostmaster:     root
+webmaster:      root
+
+# Почта root уходит на ящик администратора.
+# ВАЖНО: postmaster@mymyblog.cf должен существовать как виртуальный ящик
+# (см. /etc/postfix/vmailbox), иначе замените на локальную учётку
+# (например: root: berkut) или на внешний адрес — иначе письма будут
+# теряться/зацикливаться.
+root:           postmaster@mymyblog.cf

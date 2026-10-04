@@ -1,0 +1,12 @@
+# Amavis — идентификация домена (05-domain_id)
+use strict;
+
+# Читается из /etc/mailname (должен содержать mymyblog.cf)
+chomp($mydomain = `head -n 1 /etc/mailname`);
+
+$myhostname = 'mail.mymyblog.cf';
+
+# Домены, считающиеся «своими» (локальная доставка/уведомления)
+@local_domains_acl = ( ".$mydomain" );
+
+1;
